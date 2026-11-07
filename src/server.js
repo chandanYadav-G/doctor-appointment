@@ -2,12 +2,27 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 
+import { connectDB } from './connection'
+import { Patient, Appointment } from './schema'
+
 dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 8080
 
 app.use(cors())
 app.use(express.json())
+
+
+// catalog used by frontend services page
+const services = [
+	'Regular Healthcare Package',
+	'CT-Scan || X-Ray',
+	'Lab Test',
+	'Gynae Health',
+	'Ayurveda Treatment',
+	'Dental Checkup'
+]
+
 
 
 
