@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 // Shared client-side state for auth, patient details, services, and appointments.
 const STORAGE_KEY = 'doctorAppointmentUser' 
+const API_URL = import.meta.env.VITE_API_URL || ''
 
 // retrieved the active user from local storage when the app reloads.
 const readStoredUser = () => {
@@ -19,7 +20,7 @@ const readStoredUser = () => {
 
 // helper keeps fetch calls consistent across all async actions.
 const request = async (url, options = {}) => {
-  const response = await fetch(url, {
+  const response = await fetch(`${API_URL}${url}`, {
     headers: { 'Content-Type': 'application/json' },
     ...options,
   }) 
