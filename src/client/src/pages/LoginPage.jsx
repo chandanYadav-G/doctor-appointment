@@ -68,7 +68,7 @@ function LoginPage() {
 
             {error && <div className='m-0 rounded-lg bg-[#f8d9d4] px-3 py-[10px] text-[0.92rem] text-[#9b1c1c]'>{error}</div>}
 
-            <button type='submit' className='mt-2 w-full rounded-xl bg-[linear-gradient(135deg,#9f5ec9,#7e33a8)] px-[18px] py-4 text-[1.2rem] font-bold tracking-[0.04em] text-white transition-transform duration-200 hover:-translate-y-px' disabled={status === 'loading'}>
+            <button type='submit' className='mt-2 w-full cursor-pointer rounded-xl bg-[linear-gradient(135deg,#9f5ec9,#7e33a8)] px-[18px] py-4 text-[1.2rem] font-bold tracking-[0.04em] text-white transition-transform duration-200 hover:-translate-y-px' disabled={status === 'loading'}>
               {status === 'loading' ? 'LOGGING IN...' : 'LOGIN'}
             </button>
           </form>
