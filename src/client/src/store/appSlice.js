@@ -76,7 +76,7 @@ export const fetchPatient = createAsyncThunk(
   },
 ) 
 
-export const updatePatient = createAsyncThunk(
+export const updatePatient = createAsyncThunk( 
   'app/updatePatient',
   async ({ email, patient }, { rejectWithValue }) => {
     try {

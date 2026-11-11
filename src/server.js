@@ -140,7 +140,7 @@ app.get('/api/patient', async (req, res) => {
 })
 
 // updating patient
-app.patch('api/patient', async (req, res) => {
+app.patch('/api/patient', async (req, res) => { 
   const currentEmail = String(req.query.email || '').trim().toLowerCase()
   if (!currentEmail) {
     return res.status(400).json({ message: 'Patient email is required' })
