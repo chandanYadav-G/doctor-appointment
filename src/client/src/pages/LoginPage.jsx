@@ -8,7 +8,7 @@ function LoginPage() {
   const dispatch = useDispatch() 
   const navigate = useNavigate() 
   const { status, error } = useSelector((state) => state.app) 
-  const [form, setForm] = useState({ email: 'alina@example.com', password: '123456' }) 
+  const [form, setForm] = useState({ email: 'chandan@gmail.com', password: '123456' }) 
 
   const handleChange = (event) => {
     const { name, value } = event.target 
