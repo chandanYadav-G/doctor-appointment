@@ -139,6 +139,78 @@ app.get('/api/patient', async (req, res) => {
   res.json({ patient: normalizePatient(patient) })
 })
 
+// updating patient
+app.patch('api/patient', async (req, res) => {
+  const currentEmail = String(req.query.email || '').trim().toLowerCase()
+  if (!currentEmail) {
+    return res.status(400).json({ message: 'Patient email is required' })
+  }
+
+  const editableFields = [
+    'firstName',
+    'lastName',
+    'phone',
+    'email',
+    'address1',
+    'address2',
+    'city',
+    'state',
+    'zipCode',
+  ]
+  const updates = {}
+
+  for (const field of editableFields) {
+    if (Object.hasOwn(req.body || {}, field)) {
+      if (typeof req.body[field] !== 'string') {
+        return res.status(400).json({ message: `${field} must be a string` })
+      }
+      updates[field] = req.body[field].trim()
+    }
+  }
+
+  if (Object.keys(updates).length === 0) {
+    return res.status(400).json({ message: 'Please provide patient details to update' })
+  }
+
+  if (
+    (updates.firstName !== undefined && !updates.firstName) ||
+    (updates.lastName !== undefined && !updates.lastName) ||
+    (updates.phone !== undefined && !updates.phone)
+  ) {
+    return res.status(400).json({ message: 'First name, last name, and phone cannot be empty' })
+  }
+
+  if (updates.email !== undefined) {
+    updates.email = updates.email.toLowerCase()
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(updates.email)) {
+      return res.status(400).json({ message: 'Please provide a valid email address' })
+    }
+
+    const existingPatient = await Patient.findOne({ email: updates.email })
+    if (existingPatient && existingPatient.email !== currentEmail) {
+      return res.status(409).json({ message: 'Patient already exists with this email' })
+    }
+  }
+
+  const patient = await Patient.findOneAndUpdate(
+    { email: currentEmail },
+    { $set: updates },
+    { new: true, runValidators: true },
+  )
+
+  if (!patient) {
+    return res.status(404).json({ message: 'No patient found' })
+  }
+
+  if (updates.email && updates.email !== currentEmail) {
+    await Appointment.updateMany(
+      { patientEmail: currentEmail },
+      { $set: { patientEmail: updates.email } },
+    )
+  }
+
+  return res.json({ patient: normalizePatient(patient) })
+})
 
 // getting services
 app.get('/api/services', (req, res) => {

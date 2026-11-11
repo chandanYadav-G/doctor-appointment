@@ -15,7 +15,7 @@ const readStoredUser = () => {
   } catch (error) {
     return null 
   }
-} 
+}
 
 // helper keeps fetch calls consistent across all async actions.
 const request = async (url, options = {}) => {
@@ -75,6 +75,21 @@ export const fetchPatient = createAsyncThunk(
     }
   },
 ) 
+
+export const updatePatient = createAsyncThunk(
+  'app/updatePatient',
+  async ({ email, patient }, { rejectWithValue }) => {
+    try {
+      const data = await request(`/api/patient?email=${encodeURIComponent(email)}`, {
+        method: 'PATCH',
+        body: JSON.stringify(patient),
+      })
+      return data.patient
+    } catch (error) {
+      return rejectWithValue(error.message)
+    }
+  },
+)
 
 export const fetchServices = createAsyncThunk(
   'app/fetchServices',
@@ -186,6 +201,13 @@ const appSlice = createSlice({
       })
       .addCase(fetchPatient.fulfilled, (state, action) => {
         state.patient = action.payload 
+      })
+      .addCase(updatePatient.fulfilled, (state, action) => {
+        state.patient = action.payload
+        state.user = { ...state.user, ...action.payload }
+        if (typeof window !== 'undefined') {
+          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state.user))
+        }
       })
       .addCase(fetchServices.fulfilled, (state, action) => {
         state.services = action.payload 
