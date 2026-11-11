@@ -298,7 +298,7 @@ app.post('/api/appointments', async (req, res) => {
 const startServer = async function(){
 	try{
 		await connectDB() // connecting database before server startup
-		app.listen(PORT, () => {
+		app.listen(PORT, '0.0.0.0', () => { //added host 0.0.0.0 for render services
 			console.log(`Server Started. App listening at PORT : ${PORT}`)
 		})
 	}catch(error){
