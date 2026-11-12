@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 const mongoUri = process.env.MONGODB_URI
 
-const connectDB = async () => {
+const connectDB = async () => { 
     try {
         await mongoose.connect(mongoUri)
         console.log('Connected to MongoDB Atlas!')

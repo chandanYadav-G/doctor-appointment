@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 import mongoose from 'mongoose' 
-
+ 
 // Hash passwords with a random salt so patient credentials are stored safely.
 const hashPassword = (password) => {
   const salt = crypto.randomBytes(16).toString('hex') 
